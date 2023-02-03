@@ -406,6 +406,7 @@ p.nominalBounds = new cjs.Rectangle(-230.3,-116.1,461.1,232.3);
 	}
 	this.frame_51 = function() {
 		this.stop();
+		window.dispatchEvent(new Event('checkCounter'));
 	}
 	// actions tween:
 	this.timeline.addTween(cjs.Tween.get(this).wait(3).call(this.frame_3).wait(16).call(this.frame_19).wait(6).call(this.frame_25).wait(26).call(this.frame_51).wait(1));
@@ -735,11 +736,17 @@ p.nominalBounds = new cjs.Rectangle(-536.4,-536.5,1072.9,1073.1);
 	this.frame_0 = function() {
 		this.stop();
 	}
+	this.frame_12 = function() {
+		window.dispatchEvent(new Event('success'));
+	}
+	this.frame_49 = function() {
+		window.dispatchEvent(new Event('swoosh'));
+	}
 	this.frame_64 = function() {
 		this.stop();
 	}
 	// actions tween:
-	this.timeline.addTween(cjs.Tween.get(this).call(this.frame_0).wait(64).call(this.frame_64).wait(1));
+	this.timeline.addTween(cjs.Tween.get(this).call(this.frame_0).wait(12).call(this.frame_12).wait(37).call(this.frame_49).wait(15).call(this.frame_64).wait(1));
 	// nu_mask (mask)
 	var mask = new cjs.Shape();
 	mask._off = true;
@@ -859,7 +866,7 @@ p.nominalBounds = new cjs.Rectangle(-1500,-1500,3000,3000);
 		var swooshSFX = new Audio('swoosh.mp3');
 		var btnSFX = new Audio('button.mp3');
 		var exploSFX = new Audio('explosion.mp3');
-		var shootSFX = new Audio('shoot.mp');
+		var shootSFX = new Audio('shoot.mp3');
 		musicBG.loop = true;
 		musicBG.canBePlayed = false;
 		var main = this.game;
@@ -886,14 +893,15 @@ p.nominalBounds = new cjs.Rectangle(-1500,-1500,3000,3000);
 			}
 		}
 		function checkCounter() {
-			if (counter >= 8) {
-				//end the game
-				main.gotoAndPlay(1);
-			}
 			if (counter == 1) {
 				solid.gotoAndPlay(30);
 			}
 		}
+		window.addEventListener('checkCounter', function () {
+			if (counter >= 8) {
+				main.gotoAndPlay(1);
+			}
+		});
 		window.addEventListener('playShooting', function () {
 			shootSFX.play();
 		});
@@ -903,6 +911,12 @@ p.nominalBounds = new cjs.Rectangle(-1500,-1500,3000,3000);
 		window.addEventListener('click', function () {
 			musicBG.canBePlayed = true;
 			musicBG.play();
+		});
+		window.addEventListener('swoosh', function () {
+			swooshSFX.play();
+		});
+		window.addEventListener('success', function () {
+			successSFX.play();
 		});
 		function resizeCanvas(canvas, context, width, height) {
 			var tmpCanvas = document.createElement('canvas');;
@@ -965,8 +979,7 @@ p.nominalBounds = new cjs.Rectangle(-1500,-1500,3000,3000);
 			var item = evt.currentTarget;
 			if (item.drag && item.x <= 1100 * main.scaleX // multiply x main.scaleX 
 				&& item.x >= -1100 * main.scaleX // multiply y by main.scaleY 
-				&& item.y <= 700 * main.scaleY
-				&& item.y >= -750 * main.scaleY) {
+				&& item.y <= 700 * main.scaleY && item.y >= -750 * main.scaleY) {
 				var pt = item.parent.globalToLocal(evt.stageX, evt.stageY);
 				item.x = pt.x - item.offset.x;
 				item.y = pt.y - item.offset.y;
@@ -993,8 +1006,8 @@ p.nominalBounds = new cjs.Rectangle(-1500,-1500,3000,3000);
 					musicBG.volume = 1;
 					swooshSFX.volume = 1;
 					successSFX.volume = 1;
-					exploSFX.volume = 1;
-					shootSFX.volume = 1;
+					exploSFX.volume = 0.5;
+					shootSFX.volume = 0.5;
 					btnSFX.volume = 1;
 				} else {
 					musicBG.volume = 0;
@@ -1050,8 +1063,8 @@ lib.properties = {
 	color: "#FFFFFF",
 	opacity: 1.00,
 	manifest: [
-		{src:"index_atlas_P_.png?1675417823773", id:"index_atlas_P_"},
-		{src:"index_atlas_NP_.jpg?1675417823773", id:"index_atlas_NP_"}
+		{src:"index_atlas_P_.png?1675418553992", id:"index_atlas_P_"},
+		{src:"index_atlas_NP_.jpg?1675418553992", id:"index_atlas_NP_"}
 	],
 	preloads: []
 };
@@ -1137,7 +1150,7 @@ function handleComplete(evt,comp) {
 	//Code to support hidpi screens and responsive scaling.
 	function makeResponsive(isResp, respDim, isScale, scaleType) {		
 		var lastW, lastH, lastS=1;		
-			function resizeCanvas() {			
+	function resizeCanvas() {			
 			var w = lib.properties.width, h = lib.properties.height;			
 			var iw = window.innerWidth, ih=window.innerHeight;			
 			var pRatio = window.devicePixelRatio || 1, xRatio=iw/w, yRatio=ih/h, sRatio=1;			
@@ -1176,9 +1189,9 @@ function handleComplete(evt,comp) {
 <!-- write your code here -->
 </head>
 <body onload="init();" style="margin:0px;">
-	<div id="animation_container" style="background-color:rgba(255, 255, 255, 1.00); width:1000px; height:1000px">
-		<canvas id="canvas" width="1000" height="1000" style="position: absolute; display: block; background-color:rgba(255, 255, 255, 1.00);"></canvas>
-		<div id="dom_overlay_container" style="pointer-events:none; overflow:hidden; width:1000px; height:1000px; position: absolute; left: 0px; top: 0px; display: block;">
+	<div id="animation_container" style="background-color:rgba(255, 255, 255, 1.00); width:1000px; height:100%">
+		<canvas id="canvas" width="100%" height="100%" style="position: absolute; display: block; background-color:rgba(255, 255, 255, 1.00);"></canvas>
+		<div id="dom_overlay_container" style="pointer-events:none; overflow:hidden; width:100%; height:100%; position: absolute; left: 0px; top: 0px; display: block;">
 		</div>
 	</div>
 </body>
