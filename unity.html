@@ -1711,6 +1711,7 @@ p.nominalBounds = new cjs.Rectangle(-1500,-1500,3000,3000);
 		}
 		function destroyDrone(evt) {
 			var drone = evt.currentTarget;
+			musicBG.canBePlayed = true;
 			if (drone.clickable && statusBar.currentFrame < 478) {
 				hand.visible = false;
 				drone.gotoAndPlay(20);
@@ -1735,10 +1736,6 @@ p.nominalBounds = new cjs.Rectangle(-1500,-1500,3000,3000);
 		});
 		window.addEventListener('exploSFX', function () {
 			exploSFX.play();
-		});
-		window.addEventListener('click', function () {
-			musicBG.canBePlayed = true;
-			musicBG.play();
 		});
 		window.addEventListener('swoosh', function () {
 			swooshSFX.play();
@@ -1794,23 +1791,23 @@ p.nominalBounds = new cjs.Rectangle(-1500,-1500,3000,3000);
 		function bgOnMouseUp(evt) {
 			var item = evt.currentTarget;
 			item.drag = false;
-			if (item.x > 1100 * main.scaleX) {
-				item.x = 1099 * main.scaleX; 
+			if (item.x > 1100 * main.scaleX *.5) {
+				item.x = 1099 * main.scaleX *.5; 
 			}
-			if (item.x < -1100 * main.scaleX) {
-				item.x = -1099 * main.scaleX;  
+			if (item.x < -1100 * main.scaleX *.5) {
+				item.x = -1099 * main.scaleX *.5;  
 			}
-			if (item.y > 700 * main.scaleY) {
-				item.y = 699 * main.scaleY; 
+			if (item.y > 700 * main.scaleY *.5) {
+				item.y = 699 * main.scaleY *.5; 
 			}
-			if (item.y < -750 * main.scaleY) {
-				item.y = -749 * main.scaleY;
+			if (item.y < -750 * main.scaleY *.5) {
+				item.y = -749 * main.scaleY *.5;
 			}
 		}
 		function bgOnMouseMove(evt) {
 			var item = evt.currentTarget;
-			if (item.drag && item.x <= 1100 * main.scaleX && item.x >= -1100 * main.scaleX 
-				&& item.y <= 700 * main.scaleY && item.y >= -750 * main.scaleY) {
+			if (item.drag && item.x <= 1100 * main.scaleX *.5 && item.x >= -1100 * main.scaleX *.5 
+				&& item.y <= 700 * main.scaleY *.5 && item.y >= -750 * main.scaleY *.5) {
 				var pt = item.parent.globalToLocal(evt.stageX, evt.stageY);
 				item.x = pt.x - item.offset.x;
 				item.y = pt.y - item.offset.y;
@@ -1881,18 +1878,10 @@ p.nominalBounds = new cjs.Rectangle(-1500,-1500,3000,3000);
 		
 		function onSdkReady() {
 			// Wait for the ad to become viewable for the first time
-			if (mraid.isViewable()) {
-				showMyAd();
+			if (mraid.getState == 'hidden') {
+				musicBG.canBePlayed = false;
 			} else {
-				mraid.addEventListener('viewableChange',
-					function (viewable) {
-						if (viewable) {
-							mraid.removeEventListener('viewableChange', arguments.callee);
-							showMyAd();
-						} else {
-							musicBG.canBePlayed = false;
-						}
-					});
+				showMyAd();
 			}
 		}
 		function showMyAd() {
