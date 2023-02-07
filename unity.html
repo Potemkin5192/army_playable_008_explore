@@ -1857,7 +1857,7 @@ p.nominalBounds = new cjs.Rectangle(-1500,-1500,3000,3000);
 		}
 		createjs.Ticker.addEventListener("tick", handleVisibilityChange);
 		function handleVisibilityChange() {
-			if (document.hidden) {
+			if (musicBG.canBePlayed == false) {
 				musicBG.volume = 0;
 				swooshSFX.volume = 0;
 				successSFX.volume = 0;
@@ -1865,8 +1865,7 @@ p.nominalBounds = new cjs.Rectangle(-1500,-1500,3000,3000);
 				shootSFX.volume = 0;
 				btnSFX.volume = 0;
 				failSFX.volume = 0;
-			} else {
-				if (musicBG.canBePlayed) {
+			} else if (musicBG.canBePlayed) {
 					musicBG.volume = 1;
 					swooshSFX.volume = 1;
 					successSFX.volume = 1;
@@ -1874,23 +1873,12 @@ p.nominalBounds = new cjs.Rectangle(-1500,-1500,3000,3000);
 					shootSFX.volume = 0.5;
 					btnSFX.volume = 1;
 					failSFX.volume = 1;
-				} else {
-					musicBG.volume = 0;
-					swooshSFX.volume = 0;
-					successSFX.volume = 0;
-					exploSFX.volume = 0;
-					shootSFX.volume = 0;
-					btnSFX.volume = 0;
-					failSFX.volume = 0;
 				}
-			}
 		}
+	
 		
-		if (mraid.getState() === 'loading') {
-			mraid.addEventListener('ready', onSdkReady);
-		} else {
-			onSdkReady();
-		}
+		mraid.addEventListener('ready', onSdkReady);
+		
 		function onSdkReady() {
 			// Wait for the ad to become viewable for the first time
 			if (mraid.isViewable()) {
@@ -1901,6 +1889,8 @@ p.nominalBounds = new cjs.Rectangle(-1500,-1500,3000,3000);
 						if (viewable) {
 							mraid.removeEventListener('viewableChange', arguments.callee);
 							showMyAd();
+						} else {
+							musicBG.canBePlayed = false;
 						}
 					});
 			}
