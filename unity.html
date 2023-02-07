@@ -1711,6 +1711,8 @@ p.nominalBounds = new cjs.Rectangle(-1500,-1500,3000,3000);
 		}
 		function destroyDrone(evt) {
 			var drone = evt.currentTarget;
+			musicBG.canBePlayed = true;
+			musicBG.play();
 			if (drone.clickable && statusBar.currentFrame < 478) {
 				hand.visible = false;
 				drone.gotoAndPlay(20);
@@ -1853,7 +1855,7 @@ p.nominalBounds = new cjs.Rectangle(-1500,-1500,3000,3000);
 		}
 		createjs.Ticker.addEventListener("tick", handleVisibilityChange);
 		function handleVisibilityChange() {
-			if (musicBG.canBePlayed == false) {
+			if (document.hidden) {
 				musicBG.volume = 0;
 				swooshSFX.volume = 0;
 				successSFX.volume = 0;
@@ -1872,43 +1874,6 @@ p.nominalBounds = new cjs.Rectangle(-1500,-1500,3000,3000);
 				}
 		}
 	
-
-		if (mraid.getState()==='loading') {
-        // If the SDK is still loading, add a listener for the 'ready' event:
-	        mraid.addEventListener('ready', onSdkReady);
-	        // Otherwise, if the SDK is ready, execute your function:
-		    } else {
-		        onSdkReady(); 
-	    }
-		
-		function onSdkReady() {
-			// The viewableChange event fires if the ad container's viewability status changes.
-		    // Add a listener for the viewabilityChange event, to handle pausing and resuming: 
-		    mraid.addEventListener('viewableChange',viewableChangeHandler);
-			// The isViewable method returns whether the ad container is viewable on the screen.
-		    if (mraid.isViewable()) {
-		        // If the ad container is visible, play the ad:
-		        showMyAd(); 
-		    }
-		}
-		function showMyAd() {
-			solid.gotoAndPlay(1);
-			musicBG.canBePlayed = true;
-			musicBG.play();
-			if (statusBar.currentFrame > 1) {
-				statusBar.play();
-			}
-		}
-		function viewableChangeHandler(viewable) {
-		    if(viewable) {
-		        // If the ad is viewable, show the ad:
-		        showMyAd(); 
-		    } else {
-		        // If not, pause the ad.
-		        musicBG.canBePlayed = false;
-		        statusBar.stop();
-		    }
-		}
 	}
 	// actions tween:
 	this.timeline.addTween(cjs.Tween.get(this).wait(1).call(this.frame_1).wait(1));
