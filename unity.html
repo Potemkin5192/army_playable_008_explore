@@ -1791,23 +1791,23 @@ p.nominalBounds = new cjs.Rectangle(-1500,-1500,3000,3000);
 		function bgOnMouseUp(evt) {
 			var item = evt.currentTarget;
 			item.drag = false;
-			if (item.x > 1100 * main.scaleX *1.5) {
-				item.x = 1099 * main.scaleX *1.5; 
+			if (item.x > 1100 * main.scaleX *2) {
+				item.x = 1099 * main.scaleX *2; 
 			}
-			if (item.x < -1100 * main.scaleX *1.5) {
-				item.x = -1099 * main.scaleX *1.5;  
+			if (item.x < -1100 * main.scaleX *2) {
+				item.x = -1099 * main.scaleX *2;  
 			}
-			if (item.y > 700 * main.scaleY *1.5) {
-				item.y = 699 * main.scaleY *1.5; 
+			if (item.y > 700 * main.scaleY *2) {
+				item.y = 699 * main.scaleY *2; 
 			}
-			if (item.y < -750 * main.scaleY *1.5) {
-				item.y = -749 * main.scaleY *1.5;
+			if (item.y < -750 * main.scaleY *2) {
+				item.y = -749 * main.scaleY *2;
 			}
 		}
 		function bgOnMouseMove(evt) {
 			var item = evt.currentTarget;
-			if (item.drag && item.x <= 1100 * main.scaleX *1.5 && item.x >= -1100 * main.scaleX *1.5 
-				&& item.y <= 700 * main.scaleY *1.5 && item.y >= -750 * main.scaleY *1.5) {
+			if (item.drag && item.x <= 1100 * main.scaleX *2 && item.x >= -1100 * main.scaleX *2 
+				&& item.y <= 700 * main.scaleY *2 && item.y >= -750 * main.scaleY *2) {
 				var pt = item.parent.globalToLocal(evt.stageX, evt.stageY);
 				item.x = pt.x - item.offset.x;
 				item.y = pt.y - item.offset.y;
@@ -1878,7 +1878,7 @@ p.nominalBounds = new cjs.Rectangle(-1500,-1500,3000,3000);
 		
 		function onSdkReady() {
 			// Wait for the ad to become viewable for the first time
-			if (mraid.getState == 'hidden') {
+			if (mraid.getState() === 'hidden') {
 				musicBG.canBePlayed = false;
 			} else {
 				showMyAd();
