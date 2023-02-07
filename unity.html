@@ -1701,7 +1701,7 @@ p.nominalBounds = new cjs.Rectangle(-1500,-1500,3000,3000);
 		var topUI = main.top;
 		var statusBar = topUI.status;
 		var counter = 0;
-		solid.gotoAndPlay(1); // comment this line for unity
+		//solid.gotoAndPlay(1); // comment this line for unity
 		var movableBG = main.base;
 		var drones = [movableBG.drone1, movableBG.drone2, movableBG.drone3, movableBG.drone4, movableBG.drone5, movableBG.drone6, movableBG.drone7, movableBG.drone8];
 		// we apply the same code for each drone with the for loop
@@ -1711,7 +1711,6 @@ p.nominalBounds = new cjs.Rectangle(-1500,-1500,3000,3000);
 		}
 		function destroyDrone(evt) {
 			var drone = evt.currentTarget;
-			musicBG.canBePlayed = true;
 			if (drone.clickable && statusBar.currentFrame < 478) {
 				hand.visible = false;
 				drone.gotoAndPlay(20);
@@ -1895,6 +1894,7 @@ p.nominalBounds = new cjs.Rectangle(-1500,-1500,3000,3000);
 		function showMyAd() {
 			solid.gotoAndPlay(1);
 			musicBG.canBePlayed = true;
+			musicBG.play();
 			if (statusBar.currentFrame > 1) {
 				statusBar.play();
 			}
